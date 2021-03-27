@@ -1,5 +1,7 @@
 ### Hi there 👋
-![Ghosts's github stats](https://github-readme-stats.vercel.app/api?username=ghosts&count_private=true)
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=ghosts&count_private=true" />
+</p>
 
 - 👷‍♂️ Currently picking up any `help-wanted` & `good first issue` tags to get more active in the open source community, so if you're here because you're wondering who the heck I am, hello!
 - 🧠 I'm usually working with React, .NET/.NET Core, C#, JavaScript/TypeScript, Redux, Svelte, and Angular.
