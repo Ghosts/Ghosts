@@ -1,6 +1,6 @@
 ### Hi there 👋
 
-- 🏢 Current Front-End Engineer at Dashlane, former Fullstack Engineer at Visa. Most of my daily work is done in a private GitLab repo, so my GitHub is mostly reflective of side-projects and open source contributions.
+- 🏢 Currently a Senior Engineer @wemod, formerly front-end engineer @dashlane & Fullstack Engineer at @Visa. 
 - 👷‍♂️ Currently picking up any `help-wanted` & `good first issue` tags to get more active in the open source community, so if you're here because you're wondering who the heck I am, hello!
 - 🧠 I'm usually working with React, JavaScript/TypeScript, Redux, and Svelte.
 - 👀 Looking to collaborate on web-based projects - either libraries, frameworks, or small apps.
