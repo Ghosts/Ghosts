@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="168" viewBox="0 0 440 168" role="img">
+<style>
+text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; fill: #f5f4f8; white-space: pre; }
+.sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif; }
+.ink { fill: #f5f4f8; } .sec { fill: #a6a2b8; } .ter { fill: #7c7891; }
+.mut { fill: #4a4759; } .acc { fill: #b9a6f2; } .strong { fill: #8b74ec; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gone { from { opacity: 1; } to { opacity: 0; } }
+.rise { animation: rise 520ms cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+
+</style>
+<rect x="0.5" y="0.5" width="439" height="167" rx="14" fill="#0b0b0f" stroke="#24232d"/>
+<g class="rise"><text x="24" y="36" font-size="12" textLength="100.8" lengthAdjust="spacingAndGlyphs" class="ter">Jackalope-Dev/</text>
+<text x="124.8" y="36" font-size="12" textLength="57.6" lengthAdjust="spacingAndGlyphs" class="ink" font-weight="700">all-mcps</text>
+<rect x="316" y="22" width="100" height="19" rx="9.5" fill="none" stroke="#b9a6f2" stroke-opacity="0.5"/>
+<text x="324" y="35.5" font-size="10" textLength="84" lengthAdjust="spacingAndGlyphs" class="acc">open directory</text>
+<text x="24" y="68" font-size="14" class="sans sec">The open directory for Model Context Protocol servers.</text>
+<text x="24" y="89" font-size="14" class="sans sec">Discover, evaluate and install 22,000+ MCP servers.</text>
+<circle cx="29" cy="138" r="5" fill="#3178c6"/><text x="40" y="142" font-size="11" textLength="132" lengthAdjust="spacingAndGlyphs" class="sec">Next.js · Cloudflare</text>
+<text x="24" y="116" font-size="10" textLength="72" lengthAdjust="spacingAndGlyphs" class="ter">active today</text>
+<g style="animation: fade 500ms 400ms both"><text x="300.8" y="142" font-size="12" textLength="115.2" lengthAdjust="spacingAndGlyphs" class="acc">▁▁▁▁▁▁▁▁▁▃▃▄▄█▄▂</text></g>
+<text x="314" y="116" font-size="10" textLength="102" lengthAdjust="spacingAndGlyphs" class="ter">278 commits · 16w</text></g>
+</svg>
