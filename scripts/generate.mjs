@@ -264,6 +264,29 @@ ${body}
 
 // ── hero ─────────────────────────────────────────────────────────────────────
 
+/** When the first garble starts (after the intro decode), and how often it repeats. */
+const GARBLE_START = 3600;
+const GARBLE_STYLE = `
+@keyframes settle {
+  0%, 3% { opacity: 1; transform: none; }
+  5% { opacity: .3; transform: translateX(1.5px); }
+  7% { opacity: .08; transform: translateX(-1.5px); }
+  9% { opacity: .15; transform: translateX(1px); }
+  12% { opacity: .65; transform: none; }
+  15%, 100% { opacity: 1; transform: none; }
+}
+@keyframes fuzz-a {
+  0%, 3% { opacity: 0; } 5% { opacity: .9; } 6% { opacity: .25; } 7.5% { opacity: .9; }
+  9% { opacity: .3; } 10.5% { opacity: .7; } 13% { opacity: .15; } 15%, 100% { opacity: 0; }
+}
+@keyframes fuzz-b {
+  0%, 4% { opacity: 0; } 5.5% { opacity: .3; } 6.5% { opacity: .85; } 8% { opacity: .25; }
+  9.5% { opacity: .8; } 11.5% { opacity: .3; } 14%, 100% { opacity: 0; }
+}
+.settle { animation: settle 10s linear infinite; }
+.fuzz-a { animation: fuzz-a 10s steps(1, end) infinite; }
+.fuzz-b { animation: fuzz-b 10s steps(1, end) infinite; }`;
+
 function heroMark(theme, { x, y, cols, rows, size }) {
   const cellW = size * CHAR;
   const cellH = size * 1.22;
@@ -284,8 +307,15 @@ function heroMark(theme, { x, y, cols, rows, size }) {
     const delay = 120 + row * 32;
     const layers = new Map();
     let noise = '';
+    let fuzzA = '';
+    let fuzzB = '';
+    const pick = () => NOISE[Math.floor(rand() * NOISE.length)];
     line.forEach((cell, col) => {
-      noise += cell.kind ? NOISE[Math.floor(rand() * NOISE.length)] : ' ';
+      noise += cell.kind ? pick() : ' ';
+      // The garble spills a cell past the silhouette so the edges go fuzzy too.
+      const edge = !cell.kind && (line[col - 1]?.kind || line[col + 1]?.kind || grid[row - 1]?.[col]?.kind || grid[row + 1]?.[col]?.kind);
+      fuzzA += cell.kind || (edge && rand() < 0.4) ? pick() : ' ';
+      fuzzB += cell.kind || (edge && rand() < 0.4) ? pick() : ' ';
       for (const kind of ['fill', 'echo']) {
         for (let b = 0; b < bands.length; b++) {
           const key = `${kind}${b}`;
@@ -299,16 +329,24 @@ function heroMark(theme, { x, y, cols, rows, size }) {
     if (noise.trim()) {
       parts.push(mono(noise.trimEnd(), x, baseline, size, `class="acc" opacity="0.45" style="animation: gone 380ms ease-in ${delay + 260}ms both"`));
     }
+    const settled = [];
     for (const [key, chars] of layers) {
       const text = chars.join('').trimEnd();
       if (!text.trim()) continue;
       const kind = key.slice(0, 4);
       const opacity = bands[Number(key[4])];
       const fill = kind === 'fill' ? 'url(#shine)' : theme.echo;
-      parts.push(
+      settled.push(
         mono(text, x, baseline, size, `fill="${fill}" opacity="${kind === 'echo' ? round(0.35 + opacity * 0.55) : opacity}" style="animation: fade 420ms ease-out ${delay + 300}ms both"`),
       );
     }
+    if (!settled.length && !fuzzA.trim()) return;
+    // Every cycle the row dissolves into noise and settles back, a little out of step
+    // with its neighbours so the mark fuzzes rather than wipes.
+    const garble = `animation-delay: ${Math.round(GARBLE_START + row * 5 + rand() * 380)}ms`;
+    parts.push(`<g class="settle" style="${garble}">${settled.join('')}</g>`);
+    parts.push(mono(fuzzA.trimEnd(), x, baseline, size, `fill="${theme.echo}" opacity="0" class="fuzz-a" style="${garble}"`));
+    parts.push(mono(fuzzB.trimEnd(), x, baseline, size, `fill="${theme.ink}" opacity="0" class="fuzz-b" style="${garble}"`));
   });
 
   // A few cells keep glitching between their glyph and noise, like the app's shimmer.
@@ -318,11 +356,12 @@ function heroMark(theme, { x, y, cols, rows, size }) {
     const cx = x + col * cellW;
     const cy = y + (row + 0.82) * cellH;
     const begin = round(2 + rand() * 7);
+    const dur = round(5 + rand() * 4);
     const color = cell.kind === 'fill' ? theme.ink : theme.echo;
     const alpha = round(0.22 + cell.level * 0.78);
     parts.push(
-      `<g style="animation: fade 400ms ${1700 + row * 20}ms both"><text x="${round(cx)}" y="${round(cy)}" font-size="${size}" fill="${color}" opacity="${alpha}">${escape(glyph(cell.level, cell.kind))}<animate attributeName="opacity" values="${alpha};${alpha};0;${alpha}" keyTimes="0;0.9;0.93;1" dur="${round(5 + rand() * 4)}s" begin="${begin}s" repeatCount="indefinite"/></text>` +
-        `<text x="${round(cx)}" y="${round(cy)}" font-size="${size}" class="acc" opacity="0">${escape(NOISE[index % NOISE.length])}<animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.9;0.93;1" dur="${round(5 + rand() * 4)}s" begin="${begin}s" repeatCount="indefinite"/></text></g>`,
+      `<g class="settle" style="animation-delay: ${GARBLE_START + row * 5 + 190}ms"><g style="animation: fade 400ms ${1700 + row * 20}ms both"><text x="${round(cx)}" y="${round(cy)}" font-size="${size}" fill="${color}" opacity="${alpha}">${escape(glyph(cell.level, cell.kind))}<animate attributeName="opacity" values="${alpha};${alpha};0;${alpha}" keyTimes="0;0.9;0.93;1" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/></text>` +
+        `<text x="${round(cx)}" y="${round(cy)}" font-size="${size}" class="acc" opacity="0">${escape(NOISE[index % NOISE.length])}<animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.9;0.93;1" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/></text></g></g>`,
     );
   });
 
@@ -336,11 +375,7 @@ function heroMark(theme, { x, y, cols, rows, size }) {
   <stop offset="0.5" stop-color="${theme.accent}"/><stop offset="0.58" stop-color="${theme.ink}"/><stop offset="1" stop-color="${theme.ink}"/>
   <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="${round(width * 2.2)} 0" dur="7s" begin="2s" repeatCount="indefinite"/>
 </linearGradient>`,
-    body: `${parts.join('\n')}
-<rect x="${x}" y="${y}" width="${round(width)}" height="1.5" fill="${theme.accent}" opacity="0">
-  <set attributeName="opacity" to="0.18" begin="2.2s"/>
-  <animate attributeName="y" from="${y}" to="${round(y + height)}" dur="5.5s" begin="2.2s" repeatCount="indefinite"/>
-</rect>`,
+    body: `${parts.join('\n')}`,
   };
 }
 
@@ -431,7 +466,7 @@ ${mono('caden@jackalope: ~', tx + tw / 2 - 18 * 11 * CHAR / 2, ty + 21, 11, 'cla
 <line x1="${tx}" y1="${ty + 34}" x2="${tx + tw}" y2="${ty + 34}" stroke="${theme.border}"/>
 </g>
 ${lines.join('\n')}`;
-  return svg(width, height, theme, body);
+  return svg(width, height, theme, body, GARBLE_STYLE);
 }
 
 // ── pulse ────────────────────────────────────────────────────────────────────
