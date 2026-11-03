@@ -54,14 +54,6 @@ const FEATURED = [
   },
 ];
 
-/** Earlier work listed in the README with live star counts. */
-const ARCHIVE = [
-  ['Ghosts/Maus', 'lightweight remote administration client', 'Java'],
-  ['Ghosts/svelte-redux-toolkit', 'Svelte app template with Redux Toolkit', 'Svelte'],
-  ['Ghosts/Imbue-js', 'prototype extensions and helpers for JavaScript', 'JavaScript'],
-  ['Ghosts/medium-feed', 'tiny utility for pulling Medium articles as objects', 'JavaScript'],
-];
-
 const THEMES = {
   dark: {
     bg: '#0b0b0f',
@@ -147,7 +139,7 @@ async function fetchData() {
       defaultBranchRef { target { ... on Commit { ${history} } } }
     }`;
   };
-  const all = [...FEATURED.map((item) => item.repo), ...ARCHIVE.map(([repo]) => repo)];
+  const all = FEATURED.map((item) => item.repo);
   const repos = await graphql(`{ ${all.map((repo, index) => repoFields(`r${index}`, repo)).join('\n')} }`);
 
   const { user } = await graphql(
@@ -604,26 +596,6 @@ function card(theme, item, repo, now) {
   return svg(width, height, theme, `<g class="rise">${parts.join('\n')}</g>`);
 }
 
-// ── readme ───────────────────────────────────────────────────────────────────
-
-function archiveBlock(data) {
-  return ARCHIVE.map(([full, blurb, lang]) => {
-    const repo = data.repos[full];
-    const stars = repo?.stargazerCount ? ` · ★ ${fmt(repo.stargazerCount)}` : '';
-    return `- [**${full.split('/')[1]}**](https://github.com/${full}) — ${blurb} · <sub>${lang}${stars}</sub>`;
-  }).join('\n');
-}
-
-function updateReadme(data) {
-  const path = join(ROOT, 'README.md');
-  const readme = readFileSync(path, 'utf8');
-  const next = readme.replace(
-    /(<!-- archive:start -->\n)[\s\S]*?(\n<!-- archive:end -->)/,
-    `$1${archiveBlock(data)}$2`,
-  );
-  writeFileSync(path, next);
-}
-
 // ── main ─────────────────────────────────────────────────────────────────────
 
 const fixtureIndex = process.argv.indexOf('--fixture');
@@ -644,5 +616,4 @@ for (const [mode, theme] of Object.entries(THEMES)) {
     writeFileSync(join(ASSETS, `card-${slug}-${mode}.svg`), card(theme, item, repo, data.generatedAt));
   }
 }
-updateReadme(data);
 console.log(`Rendered ${Object.keys(THEMES).length * (2 + FEATURED.length)} graphics at ${data.generatedAt}`);
