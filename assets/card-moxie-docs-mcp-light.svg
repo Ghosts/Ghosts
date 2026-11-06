@@ -19,7 +19,7 @@ text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'L
 <text x="24" y="68" font-size="14" class="sans sec">MCP server and agent skills for Moxie Docs, living</text>
 <text x="24" y="89" font-size="14" class="sans sec">documentation for private GitHub repositories.</text>
 <circle cx="29" cy="138" r="5" fill="#3178c6"/><text x="40" y="142" font-size="11" textLength="105.6" lengthAdjust="spacingAndGlyphs" class="sec">TypeScript · MCP</text>
-<text x="24" y="116" font-size="10" textLength="168" lengthAdjust="spacingAndGlyphs" class="ter">active 17d ago · MIT license</text>
-<g style="animation: fade 500ms 400ms both"><text x="300.8" y="142" font-size="12" textLength="115.2" lengthAdjust="spacingAndGlyphs" class="acc">▄▄█▃▁▂▁▁▁▁▁▁▁▃▁▁</text></g>
+<text x="24" y="116" font-size="10" textLength="168" lengthAdjust="spacingAndGlyphs" class="ter">active 18d ago · MIT license</text>
+<g style="animation: fade 500ms 400ms both"><text x="300.8" y="142" font-size="12" textLength="115.2" lengthAdjust="spacingAndGlyphs" class="acc">▄▅█▄▁▃▁▁▁▁▁▁▁▃▁▁</text></g>
 <text x="320" y="116" font-size="10" textLength="96" lengthAdjust="spacingAndGlyphs" class="ter">27 commits · 16w</text></g>
 </svg>
