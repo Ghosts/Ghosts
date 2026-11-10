@@ -19,7 +19,7 @@ text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'L
 <text x="24" y="68" font-size="14" class="sans sec">The open directory for Model Context Protocol servers.</text>
 <text x="24" y="89" font-size="14" class="sans sec">Discover, evaluate and install 22,000+ MCP servers.</text>
 <circle cx="29" cy="138" r="5" fill="#3178c6"/><text x="40" y="142" font-size="11" textLength="132" lengthAdjust="spacingAndGlyphs" class="sec">Next.js · Cloudflare</text>
-<text x="24" y="116" font-size="10" textLength="96" lengthAdjust="spacingAndGlyphs" class="ter">active yesterday</text>
+<text x="24" y="116" font-size="10" textLength="72" lengthAdjust="spacingAndGlyphs" class="ter">active today</text>
 <g style="animation: fade 500ms 400ms both"><text x="300.8" y="142" font-size="12" textLength="115.2" lengthAdjust="spacingAndGlyphs" class="acc">▁▁▁▁▁▁▁▁▃▃▄▄█▄▃▃</text></g>
-<text x="314" y="116" font-size="10" textLength="102" lengthAdjust="spacingAndGlyphs" class="ter">312 commits · 16w</text></g>
+<text x="314" y="116" font-size="10" textLength="102" lengthAdjust="spacingAndGlyphs" class="ter">313 commits · 16w</text></g>
 </svg>
